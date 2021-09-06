@@ -41,9 +41,6 @@ train_ds = create_dataloader(root = args.data_dir, H = 256, W = 256, transform =
 gen = Generator()
 disc = Discriminator()
 
-if torch.cuda.is_available() == True:
-    gen = Generator().cuda()
-    disc = Discriminator().cuda()
 gen.train()
 disc.train()
 
