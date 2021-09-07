@@ -38,8 +38,8 @@ transform = transform()
 train_ds = create_dataloader(root = args.data_dir, H = 256, W = 256, transform = transform,batch_size = args.batch_size)
 
 
-gen = Generator()
-disc = Discriminator()
+gen = Generator().cuda()
+disc = Discriminator().cuda()
 
 gen.train()
 disc.train()
@@ -57,8 +57,8 @@ for epoch in range(args.epochs):
         # DISC
 
         disc_optim.zero_grad()
-
-        gen_patch = gen(torch.rand(args.batch_size,32,32,32))
+        disc_patch = disc_patch.cuda()
+        gen_patch = gen(torch.rand(args.batch_size,32,32,32).cuda())
         gen_true = torch.zeros(args.batch_size).float()
         disc_true = disc_true.float()
 
@@ -79,7 +79,7 @@ for epoch in range(args.epochs):
 
         gen_optim.zero_grad()
 
-        gen_patch = gen(torch.rand(args.batch_size, 32, 32, 32))
+        gen_patch = gen(torch.rand(args.batch_size, 32, 32, 32).cuda())
         gen_true = torch.ones(args.batch_size)
 
         gen_pred = disc(gen_patch)
