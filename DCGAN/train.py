@@ -35,7 +35,7 @@ torch.manual_seed(args.seed)
 random.seed(args.seed)
 
 transform = transform()
-train_ds = create_dataloader(root = args.data_dir, H = 256, W = 256, transform = transform,batch_size = args.batch_size)
+train_ds = create_dataloader(root = args.data_dir, H = 256, W = 256, transform = transform, batch_size = args.batch_size)
 
 
 gen = Generator().cuda()
@@ -58,12 +58,13 @@ for epoch in range(args.epochs):
 
         disc_optim.zero_grad()
         disc_patch = disc_patch.cuda()
-        gen_patch = gen(torch.rand(args.batch_size,32,32,32).cuda())
-        gen_true = torch.zeros(args.batch_size).float()
-        disc_true = disc_true.float()
+        gen_noise = torch.rand(args.batch_size,32,32,32).cuda()
+        gen_patch = gen(gen_noise).cuda()
+        gen_true = torch.zeros(args.batch_size).float().cuda()
+        disc_true = disc_true.float().cuda()
 
-        disc_pred = disc(disc_patch).float()
-        gen_pred = disc(gen_patch).float()
+        disc_pred = disc(disc_patch).float().cuda()
+        gen_pred = disc(gen_patch).float().cuda()
 
         disc_loss = criterion(disc_pred, disc_true)
         disc_loss += criterion(gen_pred, gen_true)
@@ -78,11 +79,11 @@ for epoch in range(args.epochs):
         # GEN
 
         gen_optim.zero_grad()
+        gen_noise = torch.rand(args.batch_size, 32, 32, 32).cuda()
+        gen_patch = gen(gen_noise).cuda()
+        gen_true = torch.ones(args.batch_size).cuda()
 
-        gen_patch = gen(torch.rand(args.batch_size, 32, 32, 32).cuda())
-        gen_true = torch.ones(args.batch_size)
-
-        gen_pred = disc(gen_patch)
+        gen_pred = disc(gen_patch).cuda()
         gen_loss = criterion(gen_pred, gen_true)
 
         G_LOSS += gen_loss.item()
