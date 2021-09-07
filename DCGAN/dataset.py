@@ -46,7 +46,7 @@ class GANDataset(Dataset):
 
 
     def __repr__(self):
-        return 'PokeMonDataset'
+        return 'GANDataset'
 
 
     def __getitem__(self, index):
