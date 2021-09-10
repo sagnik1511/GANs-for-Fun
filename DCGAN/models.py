@@ -1,7 +1,7 @@
 """
 DCGAN Pytorch : Model Classes
 
-©️Sagnik Roy, 2021.
+©️ Sagnik Roy, 2021.
 
 """
 
