@@ -1,7 +1,7 @@
 """
 DCGAN Pytorch : Train the custom dataset on given DCGAN
 
-©️Sagnik Roy, 2021.
+©️ Sagnik Roy, 2021.
 
 """
 
